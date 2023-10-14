@@ -6,10 +6,10 @@ export default class MoviesDAO {
             return
         }
         try {
-            movies = await conn.db(process.env.MOVIEREVIEWS_NS).collection('movies')
+            movies = await conn.db(process.env.MOVIEREVIEWS_NS).collection('movies');
         }
         catch (e) {
-            console.log('unable to connect in MoviesDAO: ${e}')
+            console.log('unable to connect in MoviesDAO: ${e}');
         }
     }
     static async getMovies({// default filter
