@@ -18,23 +18,43 @@ const MoviesList = props => {
     const [ratings, setRatings] = useState(["All Ratings"])
     const [currentPage, setCurrentPage] = useState(0)
     const [entriesPerPage, setEntriesPerPage] = useState(0)
+    const [currentSearchMode, setCurrentSearchMode] = useState("")
 
+    useEffect(() => {
+        setCurrentPage(0)
+    }, [currentSearchMode])
     //the useEffect hook is called after the component renders
     //we want to retrieve movies and ratings when component renders
+
     useEffect(() => {
         retrieveMovies()
         retrieveRatings()
     }, []) //empty array in second argument so that useEffect is only called on the components first render and not on every render of the component
 
+
     useEffect(() => {
-        retrieveMovies()
+        retrieveNextPage()
     }, [currentPage])
 
+    
+
+    const retrieveNextPage = () => {
+        if (currentSearchMode === "findByTitle")
+            findByTitle()
+        else if (currentSearchMode === "findByRating")
+            findByRating()
+        else
+            retrieveMovies()
+    }
+
     const retrieveMovies = () => {
-        MovieDataService.getAll() //returns a promise with the movies retrived from the database
+        setCurrentSearchMode("")
+        MovieDataService.getAll(currentPage) //returns a promise with the movies retrived from the database
             .then(response => {
                 console.log(response.data)
                 setMovies(response.data.movies)//set it to the movies state variable. 
+                setCurrentPage(response.data.page)
+                setEntriesPerPage(response.data.entries_per_page)
             })
             .catch(e => {
                 console.log(e)
@@ -46,15 +66,14 @@ const MoviesList = props => {
                 console.log(response.data)
                 //start with 'All ratings' if user doesn't specify any ratings
                 setRatings(["All Ratings"].concat(response.data)) //we use concatt incase the user doesnt specify any ratings..
-                setCurrentPage(response.data.page)
-                setEntriesPerPage(response.data.entries_per_page)
+                
             })
             .catch(e => {
                 console.log(e)
             })
     }
     const find = (query, by) => {
-        MovieDataService.find(query, by)
+        MovieDataService.find(query, by, currentPage)
             .then(response => {
                 console.log(response.data)
                 setMovies(response.data.movies)
@@ -64,9 +83,11 @@ const MoviesList = props => {
             })
     }
     const findByTitle = () => {
+        setCurrentSearchMode("findByTitle")
         find(searchTitle, "title")
     }
     const findByRating = () => {
+        setCurrentSearchMode("findByRating")
         if (searchRating === "All Ratings") {
             retrieveMovies()
         }
