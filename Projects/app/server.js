@@ -37,7 +37,7 @@ app.get("/", (req,res) => {
     res.json({message: "Welsome to bezkoder application"});
 });
 
- require("../Projects/routes/tutorial.routes")(app);
+ require("../app/routes/tutorial.routes")(app);
 //set port and listen for requests
 const PORT = process.env.PORT || 8000;
 
