@@ -1,47 +1,46 @@
-//set up express web server
-
-const express = require("express"); //express is for building rest apis
-const bodyParser = require("body-parser"); //helps to parse the request and create the req.body object
+const express = require('express');
+//used for building rest apis
+const bodyParser = require("body-parser");
+//helps parse request and create the req.body object
 const cors = require("cors");
-const db = require("./models");
+//provides express middleware to enable cors with various options
 
-const app = express();
+const app = express()
 
 var corsOptions = {
-    origin: "http://localhost:8081"
+    origin: "http://localhost:8001"
 };
 
 app.use(cors(corsOptions));
 
+// parse requests of content-type - application/json
+app.use(bodyParser.json());
 
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }));
+
+const db = require("./models")
 db.mongoose.connect(db.url, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 })
-.then(() => {
-    console.log("connected to the database");
-})
-.catch(err => {
-    console.log("Cannot connect to the database!", err);
-    process.exit();
+    .then(() => {
+        console.log("Connected to the database!")
+    })
+    .catch(err => {
+        console.log("Cannot connect to the database!", err);
+        process.exit();
+    });
+
+// simple route
+app.get("/", (req, res) => {
+    res.json({ message: "Welcome to bezkoder application." });
 });
 
-//parse requests of content type - application json
-app.use(bodyParser.json());
+require("./routes/tutorial.routes")(app);
 
-//parse requests of content type - application json
-app.use(bodyParser.urlencoded({ extended: true}));
-
-//simple route
-app.get("/", (req,res) => {
-    res.json({message: "Welsome to bezkoder application"});
-});
-
- require("../app/routes/tutorial.routes")(app);
-//set port and listen for requests
-const PORT = process.env.PORT || 8000;
-
-
+// set port, listen for requests
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}.`)
+    console.log(`Server is running on port ${PORT}.`);
 });
