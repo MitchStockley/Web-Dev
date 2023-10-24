@@ -92,30 +92,30 @@ exports.update = (req, res) => {
 };
 
 //delete all tut from the database
-exports.deleteAll = (req, res) => {
+exports.delete = (req, res) => {
   const id = req.params.id;
 
   Tutorial.findByIdAndRemove(id)
-    .then((data) => {
+    .then(data => {
       if (!data) {
         res.status(404).send({
-          message: `Cnnot delete tutorial with id=${id}. Maybe tutorial was not found!`,
+          message: `Cannot delete Tutorial with id=${id}. Maybe Tutorial was not found!`
         });
       } else {
         res.send({
-          message: "Tutorial was deleted successfully",
+          message: "Tutorial was deleted successfully!"
         });
       }
     })
-    .catch((err) => {
+    .catch(err => {
       res.status(500).send({
-        message: "Could not delete tutorial with id=" + id,
+        message: "Could not delete Tutorial with id=" + id
       });
     });
 };
 
 //find all the published tutorials
-exports.delete = (req, res) => {
+exports.deleteAll = (req, res) => {
   Tutorial.deleteMany({})
     .then((data) => {
       res.send({
