@@ -2,7 +2,7 @@ import http from "../http-common";
 
 class TutorialDataService {
   getAll() {
-    return http.get("https://tutorialsbackend.onrender.com/api/tutorials/");
+    return http.get("https://tutorialsbackend.onrender.com/tutorials/");
   }
 
   get(id) {
