@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const Register = (props) => {
-  const [data, setData] = useState({ 
+  const [data, setData] = useState({
     name: "",
     email: "",
     password: "",
@@ -20,7 +21,7 @@ const Register = (props) => {
     try {
       setData({ ...data, error: null });
       await axios.post(
-        "/api/auth/register",
+        "https://authbackend-1otv.onrender.com/api/auth/register",
         { name, email, password },
         {
           headers: {
@@ -33,6 +34,13 @@ const Register = (props) => {
       setData({ ...data, error: err.response.data.error });
     }
   };
+
+  const buttonStyle = {
+    width: "100px",
+    marginRight: "10px", // Adjust the margin as needed
+
+  };
+
 
   return (
     <div className="row">
@@ -74,9 +82,13 @@ const Register = (props) => {
             </div>
             {error ? <p className="text-danger">{error}</p> : null}
             <div className="text-center">
-              <button className="btn btn-primary" onClick={handleSubmit}>
+              <button className="btn btn-primary" style={buttonStyle} onClick={handleSubmit}>
                 Register
               </button>
+              <Link to="/login">
+                <button className="btn btn-primary" style={buttonStyle}>Login</button>
+              </Link>
+
             </div>
           </form>
         </div>

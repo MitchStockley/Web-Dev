@@ -5,7 +5,7 @@ const Home = (props) => {
   const [user, setUser] = useState(null);
 
   const getUser = async () => {
-    const res = await axios.get("/api/auth", {
+    const res = await axios.get("https://authbackend-1otv.onrender.com/api/auth", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },

@@ -16,7 +16,7 @@ exports.requireLogin = (req,res,next) => {
         }
     }
         catch(err) {
-            console.log("something went wrong")
+            // console.log("something went wrong")
         }
         
     }
