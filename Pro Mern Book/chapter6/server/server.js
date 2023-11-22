@@ -5,7 +5,7 @@ const { GraphQLScalarType } = require('graphql');
 const { Kind } = require('graphql/language');
 const { MongoClient } = require('mongodb');
 
-const url = 'mongodb+srv://Mitchell:Redbull8@atlascluster.miz3xai.mongodb.net/auth?retryWrites=true&w=majority';
+const url = 'mongodb://localhost/issuetracker';
 
 // Atlas URL  - replace UUU with user, PPP with password, XXX with hostname
 // const url = 'mongodb+srv://UUU:PPP@cluster0-XXX.mongodb.net/issuetracker?retryWrites=true';
@@ -62,9 +62,6 @@ async function getNextSequence(name) {
     { $inc: { current: 1 } },
     { returnOriginal: false },
   );
-  if (!result || !result.value || result.value.current === null) {
-    throw new Error(`Unable to get the next sequence for ${name}`);
-  }
   return result.value.current;
 }
 
@@ -82,9 +79,6 @@ function issueValidate(issue) {
 }
 
 async function issueAdd(_, { issue }) {
-  if(!issue.status) {
-    issue.status = 'New'
-  }
   issueValidate(issue);
   issue.created = new Date();
   issue.id = await getNextSequence('issues');

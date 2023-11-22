@@ -64,7 +64,7 @@ class IssueAdd extends React.Component {
     const form = document.forms.issueAdd;
     const issue = {
       owner: form.owner.value, title: form.title.value,
-      due: new Date(new Date().getTime() + 1000 * 60 * 60 * 24 * 10),
+      due: new Date(new Date().getTime() + 1000*60*60*24*10),
     }
     this.props.createIssue(issue);
     form.owner.value = ""; form.title.value = "";
@@ -85,7 +85,7 @@ async function graphQLFetch(query, variables = {}) {
   try {
     const response = await fetch('/graphql', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': 'application/json'},
       body: JSON.stringify({ query, variables })
     });
     const body = await response.text();
