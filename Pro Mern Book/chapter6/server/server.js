@@ -5,7 +5,7 @@ const { GraphQLScalarType } = require('graphql');
 const { Kind } = require('graphql/language');
 const { MongoClient } = require('mongodb');
 
-const url = 'mongodb://localhost/issuetracker';
+const url = 'mongodb://localhost:27017';
 
 // Atlas URL  - replace UUU with user, PPP with password, XXX with hostname
 // const url = 'mongodb+srv://UUU:PPP@cluster0-XXX.mongodb.net/issuetracker?retryWrites=true';
@@ -13,7 +13,7 @@ const url = 'mongodb://localhost/issuetracker';
 // mLab URL - replace UUU with user, PPP with password, XXX with hostname
 // const url = 'mongodb://UUU:PPP@XXX.mlab.com:33533/issuetracker';
 
-let db;
+let db; //Global variable
 
 let aboutMessage = "Issue Tracker API v1.0";
 
@@ -60,7 +60,7 @@ async function getNextSequence(name) {
   const result = await db.collection('counters').findOneAndUpdate(
     { _id: name },
     { $inc: { current: 1 } },
-    { returnOriginal: false },
+    { returnOriginal: true },
   );
   return result.value.current;
 }
