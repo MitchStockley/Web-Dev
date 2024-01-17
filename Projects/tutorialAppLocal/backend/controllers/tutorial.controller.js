@@ -114,7 +114,7 @@ exports.delete = (req, res) => {
     });
 };
 
-//find all the published tutorials
+//delete all the published tutorials
 exports.deleteAll = (req, res) => {
   Tutorial.deleteMany({})
     .then((data) => {
